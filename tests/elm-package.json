@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
     "summary": "Ntriples.Filter Test Suite",
-    "repository": "https://github.com/flarebyte/chronicle-mdl-view",
+    "repository": "https://github.com/flarebyte/chronicle-mdl-view.git",
     "license": "MIT",
     "source-directories": [
         ".",
