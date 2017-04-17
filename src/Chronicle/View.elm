@@ -18,6 +18,7 @@ import Material
 import Material.Scheme
 import Material.Button as Button
 import Material.Options as Options exposing (css)
+import Material.Layout as Layout
 
 
 
@@ -88,7 +89,43 @@ update msg model =
 type alias Mdl =
     Material.Model
 
+appHeader =
+  header [ class "mdl-layout__header" ]
+    [ div [ class "mdl-layout__header-row" ]
+        [ span [ class "mdl-layout-title" ]
+            [ text "Title" ]
+        , div [ class "mdl-layout-spacer" ]
+            []
+        , nav [ class "mdl-navigation mdl-layout--large-screen-only" ]
+            [ a [ class "mdl-navigation__link", href "" ]
+                [ text "Link" ]
+            , a [ class "mdl-navigation__link", href "" ]
+                [ text "Link" ]
+            , a [ class "mdl-navigation__link", href "" ]
+                [ text "Link" ]
+            , a [ class "mdl-navigation__link", href "" ]
+                [ text "Link" ]
+            ]
+        ]
+    ]
 
+navLink = "http://localhost:8000/nav"
+
+appDrawer =
+  div [ class "mdl-layout__drawer" ]
+    [ span [ class "mdl-layout-title" ]
+        [ text "Title" ]
+    , nav [ class "mdl-navigation" ]
+        [ a [ class "mdl-navigation__link", href navLink ]
+            [ text "Link" ]
+        , a [ class "mdl-navigation__link", href navLink ]
+            [ text "Link" ]
+        , a [ class "mdl-navigation__link", href navLink ]
+            [ text "Link" ]
+        , a [ class "mdl-navigation__link", href navLink ]
+            [ text "Link" ]
+        ]
+    ]
 view : Model -> Html Msg
 view model =
     div
@@ -109,6 +146,13 @@ view model =
              message when clicked. The `css ...` option adds CSS styling to the button.
              See `Material.Options` for details on options.
           -}
+        , Layout.render Mdl model.mdl
+        [ Layout.fixedHeader ]
+        { header = [ appHeader ]
+        , drawer = [appDrawer]
+        , tabs = ([], [])
+        , main = []
+        }
         , Button.render Mdl
             [ 0 ]
             model.mdl
