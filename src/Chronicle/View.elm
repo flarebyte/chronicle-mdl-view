@@ -37,9 +37,13 @@ unique list =
 
 -- MODEL
 
+type alias TriplesModel =
+    { count : Int
+    }
 
 type alias Model =
     { count : Int
+    , triples: TriplesModel
     , mdl :
         Material.Model
         -- Boilerplate: model store for any and all Mdl components you use.
@@ -49,6 +53,7 @@ type alias Model =
 model : Model
 model =
     { count = 0
+    , triples = { count = 7 }
     , mdl =
         Material.model
         -- Boilerplate: Always use this initial Mdl model store.
@@ -90,6 +95,18 @@ update msg model =
 
 -- VIEW
 
+p =
+  {
+  label = "http://label"
+  , app = "application"
+  , name = "name"
+  , search = "search"
+  }
+
+byPath : Model -> List String -> String
+byPath model paths =
+  "value of " -- ++ paths
+
 
 type alias Mdl =
     Material.Model
@@ -97,7 +114,7 @@ type alias Mdl =
 searchField : Model -> Html Msg
 searchField model =
   Textfield.render Mdl [2] model.mdl
-    [ Textfield.label "Search"
+    [ Textfield.label (byPath model [p.label, p.search])
     , Textfield.floatingLabel
     , Textfield.text_
     ]
@@ -107,7 +124,7 @@ viewHeader : Model -> Html Msg
 viewHeader model =
     Layout.row
         []
-        [ Layout.title [] [ text "Application name" ]
+        [ Layout.title [] [ text (byPath model [p.label, p.app]) ]
         , Layout.spacer
         , searchField model
         , Layout.spacer
