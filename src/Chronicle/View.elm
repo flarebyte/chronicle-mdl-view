@@ -23,6 +23,8 @@ import Material.Color as Color
 import Material.Menu as Menu
 import Material.Options as Options exposing (css, cs, when)
 import Material.Footer as Footer
+import Material.Textfield as Textfield
+import Material.List as Lists
 
 
 {-| Remove duplicate values, keeping the first instance of each element which appears more than once.
@@ -92,11 +94,22 @@ update msg model =
 type alias Mdl =
     Material.Model
 
+searchField : Model -> Html Msg
+searchField model =
+  Textfield.render Mdl [2] model.mdl
+    [ Textfield.label "Search"
+    , Textfield.floatingLabel
+    , Textfield.text_
+    ]
+    []
+
 viewHeader : Model -> Html Msg
 viewHeader model =
     Layout.row
         []
-        [ Layout.title [] [ text "elm-mdl Dashboard Example" ]
+        [ Layout.title [] [ text "Application name" ]
+        , Layout.spacer
+        , searchField model
         , Layout.spacer
         , Layout.navigation []
             []
@@ -145,6 +158,30 @@ appFooter model =
           ]
     }
 
+mainList : Model -> Html Msg
+mainList model =
+  Lists.ul []
+ [ Lists.li [ Lists.withBody ]
+     [ Lists.content []
+         [ text "Robert Frost"
+         , Lists.body [] [ text "I shall be telling this with a sigh / Somewhere ages and ages hence: / Two roads diverged in a wood, and I— / I took the one less traveled by, / And that has made all the difference." ]
+         ]
+     ]
+ , Lists.li [ Lists.withBody ]
+     [ Lists.content []
+         [ text "Errett Bishop"
+         , Lists.body [] [ text "And yet there is dissatisfaction in the mathematical community.  The pure mathematician is isolated from the world, which has little need of his brilliant creations. He suffers from an alienation which is seemingly inevitable: he has followed the gleam and it has led him out of this world."
+           ]
+         ]
+     ]
+ , Lists.li [ Lists.withBody ]
+     [ Lists.content []
+       [ text "Hunter Stockton Thompson"
+       , Lists.body [] [ text "We were somewhere around Barstow on the edge of the desert when the drugs began to take hold. I remember saying something like »I feel a bit lightheaded; maybe you should drive...« " ]
+       ]
+     ]
+ ]
+
 view : Model -> Html Msg
 view model =
     div
@@ -156,17 +193,13 @@ view model =
         , tabs = ([], [])
         , main = [
           text ("Current count: " ++ toString model.count)
+          , Layout.spacer
+          , mainList model
           , appFooter model
         ]
         }
         ]
         |> Material.Scheme.top
-
-
-
--- Load Google Mdl CSS. You'll likely want to do that not in code as we
--- do here, but rather in your master .html file. See the documentation
--- for the `Material` module for details.
 
 
 main : Program Never Model Msg
