@@ -97,24 +97,46 @@ update msg model =
 
 p =
   {
-  label = "http://label"
+  root = "http://root"
+  , unknown = "http://unknown"
+  , label = "http://label"
   , app = "application"
   , name = "name"
   , search = "search"
   }
 
-byPath : Model -> List String -> String
-byPath model paths =
-  "value of " -- ++ paths
+type alias Pathway = List String
 
+byPath : Model -> Pathway -> String
+byPath model paths =
+  String.join "--" paths
+
+firstPredicate : Pathway -> String
+firstPredicate pathway =
+  Maybe.withDefault p.unknown (
+  List.head (
+    Maybe.withDefault [p.unknown] (tail(pathway))
+    )
+  )
 
 type alias Mdl =
     Material.Model
 
+-- Fields
+
 searchField : Model -> Html Msg
 searchField model =
   Textfield.render Mdl [2] model.mdl
-    [ Textfield.label (byPath model [p.label, p.search])
+    [ Textfield.label (byPath model [p.root, p.label, p.search])
+    , Textfield.floatingLabel
+    , Textfield.text_
+    ]
+    []
+
+editorField : Model -> Pathway -> Html Msg
+editorField model pathway =
+  Textfield.render Mdl [2] model.mdl
+    [ Textfield.label (byPath model [p.root, p.label, firstPredicate(pathway)])
     , Textfield.floatingLabel
     , Textfield.text_
     ]
@@ -199,6 +221,15 @@ mainList model =
      ]
  ]
 
+mainEditor : Model -> Html Msg
+mainEditor model =
+ div
+  [ style [ ( "padding", "2rem" ) ] ]
+  [
+    editorField model ["one", "two"]
+  ]
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -212,6 +243,8 @@ view model =
           text ("Current count: " ++ toString model.count)
           , Layout.spacer
           , mainList model
+          , Layout.spacer
+          , mainEditor model
           , appFooter model
         ]
         }
