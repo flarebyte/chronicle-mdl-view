@@ -22,7 +22,7 @@ import Material.Layout as Layout
 import Material.Color as Color
 import Material.Menu as Menu
 import Material.Options as Options exposing (css, cs, when)
-
+import Material.Footer as Footer
 
 
 {-| Remove duplicate values, keeping the first instance of each element which appears more than once.
@@ -123,19 +123,40 @@ drawerHeader model =
         [ text "Reset" ]
     ]
 
+appFooter : Model -> Html Msg
+appFooter model =
+  Footer.mini []
+    { left =
+        Footer.left []
+          [ Footer.logo [] [ Footer.html <| text "Mini Footer Example" ]
+          , Footer.links []
+              [ Footer.linkItem [ Footer.href "#footers" ] [ Footer.html <| text "Link 1"]
+              , Footer.linkItem [ Footer.href "#footers" ] [ Footer.html <| text "Link 2"]
+              , Footer.linkItem [ Footer.href "#footers" ] [ Footer.html <| text "Link 3"]
+              ]
+          ]
 
+    , right =
+        Footer.right []
+          [ Footer.logo [] [ Footer.html <| text "Mini Footer Right Section" ]
+          , Footer.socialButton [Options.css "margin-right" "6px"] []
+          , Footer.socialButton [Options.css "margin-right" "6px"] []
+          , Footer.socialButton [Options.css "margin-right" "0px"] []
+          ]
+    }
 
 view : Model -> Html Msg
 view model =
     div
         [ style [ ( "padding", "2rem" ) ] ]
         [ Layout.render Mdl model.mdl
-        [ Layout.fixedHeader ]
+        [ Layout.fixedHeader, Layout.fixedDrawer ]
         { header = [ viewHeader model ]
         , drawer = [ drawerHeader model ]
         , tabs = ([], [])
         , main = [
           text ("Current count: " ++ toString model.count)
+          , appFooter model
         ]
         }
         ]

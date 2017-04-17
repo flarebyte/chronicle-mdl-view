@@ -2,7 +2,7 @@ SRC = src
 BUILD = build
 HTML = example/index.html
 
-build: build-directory html js
+build: test build-directory html js
 
 build-directory:
 	mkdir -p $(BUILD)

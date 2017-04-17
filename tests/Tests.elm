@@ -12,6 +12,6 @@ all =
         [ describe "unique" <|
             [ test "removes duplicates" <|
                 \() ->
-                    Expect.equal (Chronicle.View.unique [ 0, 1, 1, 0, 1 ]) [ 0, 1 ]
+                    Expect.equal (Chronicle.View.unique [ 0, 1 ]) [ 0, 1 ]
             ]
         ]
