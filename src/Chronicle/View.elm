@@ -1,13 +1,20 @@
 module Chronicle.View
     exposing
         (
-        unique
+        unique,
+        classicHeader,
+        classicDrawer,
+        classicFooter,
+        classicList,
+        classicEditor,
+        ChronicleMsg(..),
+        ChronicleModel,
+        classicUpdate
         )
-
-{-| Convenience functions for filtering list of ntriples
+{-| View for Chronicle
 
 # Basics
-@docs  unique
+@docs  unique, classicHeader, classicDrawer, classicFooter, classicList, classicEditor, ChronicleMsg, ChronicleModel, classicUpdate
 
 -}
 
@@ -26,7 +33,6 @@ import Material.Footer as Footer
 import Material.Textfield as Textfield
 import Material.List as Lists
 
-
 {-| Remove duplicate values, keeping the first instance of each element which appears more than once.
 
     unique [0,1,1,0,1] == [0,1]
@@ -41,57 +47,17 @@ type alias TriplesModel =
     { count : Int
     }
 
-type alias Model =
+{-| ChronicleModel for Chronical View.
+
+    unique [0,1,1,0,1] == [0,1]
+-}
+type alias ChronicleModel =
     { count : Int
     , triples: TriplesModel
     , mdl :
         Material.Model
         -- Boilerplate: model store for any and all Mdl components you use.
     }
-
-
-model : Model
-model =
-    { count = 0
-    , triples = { count = 7 }
-    , mdl =
-        Material.model
-        -- Boilerplate: Always use this initial Mdl model store.
-    }
-
-
-
--- ACTION, UPDATE
-
-
-type Msg
-    = Increase
-    | Reset
-    | Mdl (Material.Msg Msg)
-
-
-
--- Boilerplate: Msg clause for internal Mdl messages.
-
-
-update : Msg -> Model -> ( Model, Cmd Msg )
-update msg model =
-    case msg of
-        Increase ->
-            ( { model | count = model.count + 1 }
-            , Cmd.none
-            )
-
-        Reset ->
-            ( { model | count = 0 }
-            , Cmd.none
-            )
-
-        -- Boilerplate: Mdl action handler.
-        Mdl msg_ ->
-            Material.update Mdl msg_ model
-
-
 
 -- VIEW
 
@@ -107,7 +73,7 @@ p =
 
 type alias Pathway = List String
 
-byPath : Model -> Pathway -> String
+byPath : ChronicleModel -> Pathway -> String
 byPath model paths =
   String.join "--" paths
 
@@ -119,12 +85,9 @@ firstPredicate pathway =
     )
   )
 
-type alias Mdl =
-    Material.Model
-
 -- Fields
 
-searchField : Model -> Html Msg
+searchField : ChronicleModel -> Html ChronicleMsg
 searchField model =
   Textfield.render Mdl [2] model.mdl
     [ Textfield.label (byPath model [p.root, p.label, p.search])
@@ -133,7 +96,7 @@ searchField model =
     ]
     []
 
-editorField : Model -> Pathway -> Html Msg
+editorField : ChronicleModel -> Pathway -> Html ChronicleMsg
 editorField model pathway =
   Textfield.render Mdl [2] model.mdl
     [ Textfield.label (byPath model [p.root, p.label, firstPredicate(pathway)])
@@ -142,8 +105,12 @@ editorField model pathway =
     ]
     []
 
-viewHeader : Model -> Html Msg
-viewHeader model =
+{-| Header for Chronicle View.
+
+    classicHeader [0,1,1,0,1] == [0,1]
+-}
+classicHeader : ChronicleModel -> Html ChronicleMsg
+classicHeader model =
     Layout.row
         []
         [ Layout.title [] [ text (byPath model [p.label, p.app]) ]
@@ -157,8 +124,12 @@ viewHeader model =
 navLink = "http://localhost:8000/nav"
 
 
-drawerHeader : Model -> Html Msg
-drawerHeader model =
+{-| Drawer for Chronicle View.
+
+    classicDrawer [0,1,1,0,1] == [0,1]
+-}
+classicDrawer : ChronicleModel -> Html ChronicleMsg
+classicDrawer model =
     Layout.navigation []
     [
     Button.render Mdl
@@ -175,8 +146,12 @@ drawerHeader model =
         [ text "Reset" ]
     ]
 
-appFooter : Model -> Html Msg
-appFooter model =
+{-| Footer for Chronicle View.
+
+    classicFooter [0,1,1,0,1] == [0,1]
+-}
+classicFooter : ChronicleModel -> Html ChronicleMsg
+classicFooter model =
   Footer.mini []
     { left =
         Footer.left []
@@ -196,9 +171,13 @@ appFooter model =
           , Footer.socialButton [Options.css "margin-right" "0px"] []
           ]
     }
+{-| List for Chronicle View.
 
-mainList : Model -> Html Msg
-mainList model =
+    classicList [0,1,1,0,1] == [0,1]
+-}
+
+classicList : ChronicleModel -> Html ChronicleMsg
+classicList model =
   Lists.ul []
  [ Lists.li [ Lists.withBody ]
      [ Lists.content []
@@ -221,42 +200,44 @@ mainList model =
      ]
  ]
 
-mainEditor : Model -> Html Msg
-mainEditor model =
+{-| Editor for Chronicle View.
+
+    classicEditor [0,1,1,0,1] == [0,1]
+-}
+classicEditor : ChronicleModel -> Html ChronicleMsg
+classicEditor model =
  div
   [ style [ ( "padding", "2rem" ) ] ]
   [
     editorField model ["one", "two"]
   ]
 
+-- MESSAGE
+{-| Message with UI
 
-view : Model -> Html Msg
-view model =
-    div
-        [ style [ ( "padding", "2rem" ) ] ]
-        [ Layout.render Mdl model.mdl
-        [ Layout.fixedHeader, Layout.fixedDrawer ]
-        { header = [ viewHeader model ]
-        , drawer = [ drawerHeader model ]
-        , tabs = ([], [])
-        , main = [
-          text ("Current count: " ++ toString model.count)
-          , Layout.spacer
-          , mainList model
-          , Layout.spacer
-          , mainEditor model
-          , appFooter model
-        ]
-        }
-        ]
-        |> Material.Scheme.top
+    unique [0,1,1,0,1] == [0,1]
+-}
+type ChronicleMsg
+    = Increase
+    | Reset
+    | Mdl (Material.Msg ChronicleMsg)
 
 
-main : Program Never Model Msg
-main =
-    Html.program
-        { init = ( model, Cmd.none )
-        , view = view
-        , subscriptions = always Sub.none
-        , update = update
-        }
+{-| update for Chronicle View.
+
+    classicEditor [0,1,1,0,1] == [0,1]
+-}
+classicUpdate : ChronicleMsg -> ChronicleModel -> ( ChronicleModel, Cmd ChronicleMsg )
+classicUpdate msg model =
+    case msg of
+        Increase ->
+            ( { model | count = model.count + 1 }
+            , Cmd.none
+            )
+
+        Reset ->
+            ( { model | count = 0 }
+            , Cmd.none
+            )
+        Mdl msg_ ->
+            Material.update Mdl msg_ model

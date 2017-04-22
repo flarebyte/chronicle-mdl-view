@@ -11,7 +11,8 @@ html:
 	cp $(HTML) $(BUILD)/index.html
 
 js:
-	elm-make src/Chronicle/View.elm --output $(BUILD)/main.js
+	# elm-make src/Chronicle/View.elm --output $(BUILD)/view.js
+	elm-make example/ListApp.elm --output $(BUILD)/listApp.js
 
 start:
 	cd build;python -m SimpleHTTPServer 8000
