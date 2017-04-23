@@ -42,6 +42,10 @@ main =
         , update = update
         }
 
+switchContent : ChronicleModel -> Html ChronicleMsg
+switchContent model =
+  if model.count == 0 then classicList model else classicEditor model
+
 view : ChronicleModel -> Html View.ChronicleMsg
 view model =
     div
@@ -54,9 +58,7 @@ view model =
         , main = [
           text ("Current count: " ++ toString model.count)
           , Layout.spacer
-          , classicList model
-          , Layout.spacer
-          , classicEditor model
+          , switchContent model
           , classicFooter model
         ]
         }

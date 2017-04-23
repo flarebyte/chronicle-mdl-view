@@ -208,7 +208,10 @@ classicEditor model =
  div
   [ style [ ( "padding", "2rem" ) ] ]
   [
-    editorField model ["one", "two"]
+    editorField model ["base", "one"]
+    , Layout.spacer
+    , editorField model ["base", "two"]
+    , editorField model ["base", "three"]
   ]
 
 -- MESSAGE
