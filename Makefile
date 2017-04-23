@@ -11,7 +11,6 @@ html:
 	cp $(HTML) $(BUILD)/index.html
 
 js:
-	# elm-make src/Chronicle/View.elm --output $(BUILD)/view.js
 	elm-make example/App.elm --output $(BUILD)/app.js
 
 start:

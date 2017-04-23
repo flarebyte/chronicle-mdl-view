@@ -60,7 +60,7 @@ type alias ChronicleModel =
 
 -- VIEW
 
-p =
+u =
   {
   root = "http://root"
   , unknown = "http://unknown"
@@ -78,9 +78,9 @@ byPath model paths =
 
 firstPredicate : Pathway -> String
 firstPredicate pathway =
-  Maybe.withDefault p.unknown (
+  Maybe.withDefault u.unknown (
   List.head (
-    Maybe.withDefault [p.unknown] (tail(pathway))
+    Maybe.withDefault [u.unknown] (tail(pathway))
     )
   )
 
@@ -89,7 +89,7 @@ firstPredicate pathway =
 searchField : ChronicleModel -> Html ChronicleMsg
 searchField model =
   Textfield.render Mdl [2] model.mdl
-    [ Textfield.label (byPath model [p.root, p.label, p.search])
+    [ Textfield.label (byPath model [u.root, u.label, u.search])
     , Textfield.floatingLabel
     , Textfield.text_
     ]
@@ -98,7 +98,7 @@ searchField model =
 editorField : ChronicleModel -> Pathway -> Html ChronicleMsg
 editorField model pathway =
   Textfield.render Mdl [2] model.mdl
-    [ Textfield.label (byPath model [p.root, p.label, firstPredicate(pathway)])
+    [ Textfield.label (byPath model [u.root, u.label, firstPredicate(pathway)])
     , Textfield.floatingLabel
     , Textfield.text_
     ]
@@ -112,7 +112,7 @@ classicHeader : ChronicleModel -> Html ChronicleMsg
 classicHeader model =
     Layout.row
         []
-        [ Layout.title [] [ text (byPath model [p.label, p.app]) ]
+        [ Layout.title [] [ text (byPath model [u.label, u.app]) ]
         , Layout.spacer
         , searchField model
         , Layout.spacer
