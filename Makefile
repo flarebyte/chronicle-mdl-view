@@ -12,7 +12,7 @@ html:
 
 js:
 	# elm-make src/Chronicle/View.elm --output $(BUILD)/view.js
-	elm-make example/ListApp.elm --output $(BUILD)/listApp.js
+	elm-make example/App.elm --output $(BUILD)/app.js
 
 start:
 	cd build;python -m SimpleHTTPServer 8000

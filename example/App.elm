@@ -1,4 +1,4 @@
-module ListApp
+module App
   exposing(..)
 {-| ListApp
 
