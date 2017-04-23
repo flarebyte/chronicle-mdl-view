@@ -8,13 +8,12 @@ module Chronicle.View
         classicList,
         classicEditor,
         ChronicleMsg(..),
-        ChronicleModel,
-        classicUpdate
+        ChronicleModel
         )
 {-| View for Chronicle
 
 # Basics
-@docs  unique, classicHeader, classicDrawer, classicFooter, classicList, classicEditor, ChronicleMsg, ChronicleModel, classicUpdate
+@docs  unique, classicHeader, classicDrawer, classicFooter, classicList, classicEditor, ChronicleMsg, ChronicleModel
 
 -}
 
@@ -221,23 +220,3 @@ type ChronicleMsg
     = Increase
     | Reset
     | Mdl (Material.Msg ChronicleMsg)
-
-
-{-| update for Chronicle View.
-
-    classicEditor [0,1,1,0,1] == [0,1]
--}
-classicUpdate : ChronicleMsg -> ChronicleModel -> ( ChronicleModel, Cmd ChronicleMsg )
-classicUpdate msg model =
-    case msg of
-        Increase ->
-            ( { model | count = model.count + 1 }
-            , Cmd.none
-            )
-
-        Reset ->
-            ( { model | count = 0 }
-            , Cmd.none
-            )
-        Mdl msg_ ->
-            Material.update Mdl msg_ model

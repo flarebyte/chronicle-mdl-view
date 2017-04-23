@@ -18,7 +18,6 @@ import Chronicle.View as View exposing
  , classicFooter
  , classicList
  , classicEditor
- , classicUpdate
  , ChronicleModel
  , ChronicleMsg(..)
  )
@@ -40,7 +39,7 @@ main =
         { init = ( model, Cmd.none )
         , view = view
         , subscriptions = always Sub.none
-        , update = classicUpdate
+        , update = update
         }
 
 view : ChronicleModel -> Html View.ChronicleMsg
@@ -63,3 +62,18 @@ view model =
         }
         ]
         |> Material.Scheme.top
+
+update : ChronicleMsg -> ChronicleModel -> ( ChronicleModel, Cmd ChronicleMsg )
+update msg model =
+    case msg of
+        Increase ->
+            ( { model | count = model.count + 1 }
+            , Cmd.none
+            )
+
+        Reset ->
+            ( { model | count = 0 }
+            , Cmd.none
+            )
+        Mdl msg_ ->
+            Material.update Mdl msg_ model
