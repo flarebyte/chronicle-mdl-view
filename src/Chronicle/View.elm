@@ -31,6 +31,7 @@ import Material.Options as Options exposing (css, cs, when)
 import Material.Footer as Footer
 import Material.Textfield as Textfield
 import Material.List as Lists
+import Ntriples.Filter exposing (createTriple, filter, FilterExpr(..), FieldComparator(..)) 
 
 {-| Remove duplicate values, keeping the first instance of each element which appears more than once.
 
